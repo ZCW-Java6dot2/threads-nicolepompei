@@ -12,17 +12,26 @@ public class EventTracker implements Tracker {
     }
 
     synchronized public static EventTracker getInstance() {
-        return null;
+        return INSTANCE;
     }
 
     synchronized public void push(String message) {
+        int count = tracker.getOrDefault(message, 0);
+        tracker.put(message, count++);
+
     }
 
     synchronized public Boolean has(String message) {
-        return null;
+        int count = tracker.getOrDefault(message, 0);
+        return count > 0;
     }
 
     synchronized public void handle(String message, EventHandler e) {
+        int count = tracker.getOrDefault(message,0);
+
+        if(count > 0){
+            tracker.put(message, count--);
+        }
     }
 
     // Do not use this. This constructor is for tests only
