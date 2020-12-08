@@ -17,23 +17,27 @@ public class EventTracker implements Tracker {
 
     synchronized public void push(String message) {
         int count = tracker.getOrDefault(message, 0);
-        tracker.put(message, count++);
+        tracker.put(message, count + 1);
 
     }
 
     synchronized public Boolean has(String message) {
-        int count = tracker.getOrDefault(message, 0);
-        return count > 0;
+        Integer count = tracker.getOrDefault(message, 0);
+        return (tracker.containsKey(message) && count > 0);
     }
 
     synchronized public void handle(String message, EventHandler e) {
         int count = tracker.getOrDefault(message,0);
+        tracker.put(message, count--);
 
-        if(count > 0){
-            tracker.put(message, count--);
-        }
+//        if(count > 0){
+//            tracker.put(message, count--);
+//        }
     }
 
+    public Map<String, Integer> getTracker(){
+        return tracker;
+    }
     // Do not use this. This constructor is for tests only
     // Using it breaks the singleton class
     EventTracker(Map<String, Integer> tracker) {

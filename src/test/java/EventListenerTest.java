@@ -4,7 +4,7 @@ import org.junit.Test;
 import java.util.List;
 import java.util.Map;
 
-public class EventListenerTest {
+public class EventListenerTest extends Thread{
 
     @Test
     public void readToQuit() {
@@ -37,10 +37,9 @@ public class EventListenerTest {
         public boolean itemWasPushed;
         public boolean eventWasHandled;
 
-//        @Override
-//        public Map<String, Integer> tracker() {
-//            return null;
-//        }
+        public Map<String, Integer> tracker() {
+            return null;
+        }
 
         @Override
         public void push(String message) {
