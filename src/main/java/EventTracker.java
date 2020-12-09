@@ -12,6 +12,10 @@ public class EventTracker implements Tracker {
     }
 
     synchronized public static EventTracker getInstance() {
+
+//        if(INSTANCE == null){
+//            INSTANCE = new EventTracker();
+//        }
         return INSTANCE;
     }
 
@@ -27,16 +31,18 @@ public class EventTracker implements Tracker {
     }
 
     synchronized public void handle(String message, EventHandler e) {
-        int count = tracker.getOrDefault(message,0);
-        tracker.put(message, count--);
 
-//        if(count > 0){
-//            tracker.put(message, count--);
-//        }
+        try{
+            e.handle();
+            this.tracker.put(message,this.tracker.get(message) -1);
+        }
+        catch (NullPointerException n){
+            System.out.println("Message is currently untracked.");
+        }
     }
 
     public Map<String, Integer> getTracker(){
-        return tracker;
+        return this.tracker;
     }
     // Do not use this. This constructor is for tests only
     // Using it breaks the singleton class
